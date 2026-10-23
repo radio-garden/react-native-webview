@@ -558,6 +558,13 @@ RCTAutoInsetsProtocol>
     }
 #endif  // !TARGET_OS_OSX
 
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000 /* __IPHONE_26_0 */
+    if (@available(iOS 26.0, *)) {
+      _webView.scrollView.topEdgeEffect.hidden = YES;
+      _webView.scrollView.bottomEdgeEffect.hidden = YES;
+    }
+#endif
+
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000 /* __IPHONE_13_0 */
     if (@available(iOS 13.0, *)) {
       _webView.scrollView.automaticallyAdjustsScrollIndicatorInsets = _savedAutomaticallyAdjustsScrollIndicatorInsets;
