@@ -46,9 +46,19 @@ RCT_EXPORT_VIEW_PROPERTY(source, NSDictionary)
 RCT_CUSTOM_VIEW_PROPERTY(newSource, NSDictionary, RNCWebViewImpl) {
   if (json == nil) {
     [view setSource:@{}];
-  } else {
-    [view setSource:json];
+    return;
   }
+  NSMutableDictionary *source = [json mutableCopy];
+  NSMutableDictionary *headers = [NSMutableDictionary new];
+  for (NSDictionary *header in [RCTConvert NSArray:json[@"headers"]]) {
+    headers[header[@"name"]] = header[@"value"];
+  }
+  if (headers.count > 0) {
+    source[@"headers"] = headers;
+  } else {
+    [source removeObjectForKey:@"headers"];
+  }
+  [view setSource:source];
 }
 RCT_EXPORT_VIEW_PROPERTY(onFileDownload, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onLoadingStart, RCTDirectEventBlock)
